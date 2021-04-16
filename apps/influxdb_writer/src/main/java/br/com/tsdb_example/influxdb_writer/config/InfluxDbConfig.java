@@ -13,47 +13,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class InfluxDbConfig {
 
-//	@Bean
-//	public InfluxDB influxDBConnect() {
-//		InfluxDB influxDB = InfluxDBFactory.connect("http://127.0.0.1:8086", "root", "root");
-//		influxDBConnectToDataBase(influxDB, "dbName");
-//		influxDBRetentionPolicy(influxDB, "retentionPolicyName", "dbName");
-//		influxDBBatchOptions(influxDB);
-//		return influxDB;
-//	}
-//
-//	private void influxDBBatchOptions(InfluxDB influxDB) {
-//		influxDB.enableBatch(100, 100, TimeUnit.MILLISECONDS);
-//	}
-//
-//	private void influxDBRetentionPolicy(InfluxDB influxDB, String retentionPolicyName, String dbName) {
-//		String queryString = "CREATE RETENTION POLICY" + retentionPolicyName + " ON " + dbName
-//				+ " DURATION 4w REPLICATION 1 DEFAULT";
-//		influxDB.query(new Query(queryString, dbName));
-//		influxDB.setRetentionPolicy(retentionPolicyName);
-//
-//	}
-//
-//	private void influxDBConnectToDataBase(InfluxDB influxDB, String dbName) {
-//		QueryResult queryResult= influxDB.query(new Query("SHOW DATABASES"));		
-////		for(QueryResult.Result result: queryResult.getResults()) {
-////			result.getSeries().get(arg0).contains(dbName);
-////		}
-////		if(!queryResult.getResults().contains(dbName)) {
-////			influxDB.query(new Query("CREATE DATABASE "+ dbName));
-////		}		
-//		if (!influxDB.databaseExists(dbName)) {
-//            influxDB.createDatabase(dbName);
-//        }
-//		
-//		
-//		influxDB.setDatabase(dbName);
-//		
-//
-//	}
-	
-
-	private String retentionPolicyName = "firstRetention";
+	private final String retentionPolicyName = "firstRetention";
 	
 	@Value("${influxdb.url}")
 	private String url;
@@ -61,13 +21,21 @@ public class InfluxDbConfig {
 	@Value("${influxdb.db}")
 	private String dbName;
 	
+	@Value("${influxdb.admin.user}")
+	private String user;
+	
+	@Value("${influxdb.admin.password}")
+	private String password;
+	
 
 	@Bean
 	public InfluxDB influxDBConfig() {
-		InfluxDB influxDB = InfluxDBFactory.connect("http://127.0.0.1:8086", "root", "root");
+		InfluxDB influxDB = InfluxDBFactory.connect(url, user, password);
+	
 		influxDB.setDatabase(dbName);
 		String queryString = "CREATE RETENTION POLICY " + retentionPolicyName + " ON " + dbName
-				+ " DURATION 1w REPLICATION 1 DEFAULT";
+				+ " DURATION 1d REPLICATION 1 DEFAULT";
+		System.out.println(queryString);
 		influxDB.query(new Query(queryString, dbName));
 		influxDB.setRetentionPolicy(retentionPolicyName);
 		influxDB.setLogLevel(InfluxDB.LogLevel.BASIC);
