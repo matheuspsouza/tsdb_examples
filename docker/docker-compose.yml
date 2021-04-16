@@ -40,8 +40,10 @@ services:
       - grafana-data:/var/lib/grafana
   graphite-writer:
     image: graphite-writer/graphite_writer:latest
+    ports:
+      - 8084:8084
     environment:
-      - GRAPHITE.HOST=graphitedb
+      - GRAPHITE.HOST=graphite
     depends_on:
       - graphite
   graphite:

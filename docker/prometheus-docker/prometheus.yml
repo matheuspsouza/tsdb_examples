@@ -2,10 +2,13 @@
 global:
     scrape_interval: 5s
 scrape_configs:
-    - job_name: 'exporter'
-      metrics_path: '/metrics'
+    - job_name: 'graphite-writer'
+      metrics_path: '/actuator/prometheus'
       static_configs:
-          - targets: ['exporter:8070']
-          - targets: ['push-gateway:9091']
+          - targets: ['graphite-writer:8084']
+    - job_name: 'influxdb-writer'
+      metrics_path: '/actuator/prometheus'
+      static_configs:
+          - targets: ['influxdb-writer:8083']
    
     

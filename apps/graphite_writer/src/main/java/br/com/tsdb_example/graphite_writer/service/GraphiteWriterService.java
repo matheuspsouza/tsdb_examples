@@ -13,22 +13,22 @@ public class GraphiteWriterService {
 
 
 	@Autowired
-	private GraphiteConfig graphiteConfig;
+	private GraphiteConfig graphite;
 
 	public void writeToGraphite() {
 
 		for (int i = 0; i < 500; i++) {
 			double value=Math.random()*10;
-			logger.info("tag_" + i + " "+ System.currentTimeMillis()/1000 +" "+ value+"\n");
-			graphiteConfig.write("matheus.test.health", System.currentTimeMillis()/1000, value);
-			graphiteConfig.write("matheus.test.tag_"+i, System.currentTimeMillis()/1000, value);
+			//logger.info("tag_" + i + " "+ System.currentTimeMillis()/1000 +" "+ value+"\n");
+			graphite.write("matheus.test.health", System.currentTimeMillis()/1000, value);
+			graphite.write("matheus.test.tag_"+i, System.currentTimeMillis()/1000, value);
 		}
 		
 		try {
 			Thread.sleep(1000);
 			writeToGraphite();
 		} catch (InterruptedException e) {
-			graphiteConfig.closeGraphiteConnection();
+			graphite.closeGraphiteConnection();
 			e.printStackTrace();
 		}
 	}
