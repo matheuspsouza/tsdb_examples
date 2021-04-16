@@ -3,7 +3,6 @@ services:
   portainer:
     image: portainer/portainer
     command: -H unix:///var/run/docker.sock
-    restart: always
     ports:
       - 9000:9000
       - 8000:8000
@@ -12,23 +11,21 @@ services:
       - portainer_data:/data
   influxdb-writer:
     image: influxdb-writer/influxdb_writer:latest
-    #restart: always
     ports:
       - 8083:8083
     environment:
       - INFLUXDB.URL=http://influxdb:8086
-      - INFLUXDB.DB=influx_example
+      - INFLUXDB.DB=influxdb_example
     depends_on:
       - influxdb 
   influxdb:
     image: influxdb:latest
-    #restart: always
     ports:
-      - 8090:8086
+      - 8086:8086
     volumes:
       - influxdb-storage:/var/lib/influxdb
     environment:
-      - INFLUXDB_DB=influx_example
+      - INFLUXDB_DB=influxdb_example
   grafana:
     image: grafana/grafana
     environment:
@@ -39,14 +36,12 @@ services:
       - grafana-data:/var/lib/grafana
   graphite-writer:
     image: graphite-writer/graphite_writer:latest
-    #restart: always
     environment:
       - GRAPHITE.HOST=graphitedb
     depends_on:
-      - graphitedb
-  graphitedb:
+      - graphite
+  graphite:
     image: graphiteapp/graphite-statsd
-    #restart: always
     ports:
       - 8081:80
       - 8125:8125
