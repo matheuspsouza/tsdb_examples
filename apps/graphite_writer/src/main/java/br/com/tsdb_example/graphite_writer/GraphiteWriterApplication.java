@@ -1,10 +1,10 @@
-package br.com.tagna.nexum.graphite_writer;
+package br.com.tsdb_example.graphite_writer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import br.com.tagna.nexum.graphite_writer.service.GraphiteWriterService;
+import br.com.tsdb_example.graphite_writer.service.GraphiteWriterService;
 
 @SpringBootApplication
 public class GraphiteWriterApplication {

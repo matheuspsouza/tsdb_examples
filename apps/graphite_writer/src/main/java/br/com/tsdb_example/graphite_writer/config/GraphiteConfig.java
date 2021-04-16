@@ -1,4 +1,4 @@
-package br.com.tagna.nexum.graphite_writer.config;
+package br.com.tsdb_example.graphite_writer.config;
 
 import java.io.IOException;
 import java.io.OutputStream;

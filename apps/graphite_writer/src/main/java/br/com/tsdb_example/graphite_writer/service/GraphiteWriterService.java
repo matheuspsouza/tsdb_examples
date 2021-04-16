@@ -1,11 +1,11 @@
-package br.com.tagna.nexum.graphite_writer.service;
+package br.com.tsdb_example.graphite_writer.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.tagna.nexum.graphite_writer.config.GraphiteConfig;
+import br.com.tsdb_example.graphite_writer.config.GraphiteConfig;
 
 @Service
 public class GraphiteWriterService {

@@ -1,4 +1,4 @@
-package br.com.tagna.nexum.graphite_writer;
+package br.com.tsdb_example.graphite_writer;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

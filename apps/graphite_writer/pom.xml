@@ -9,7 +9,7 @@
 		<version>2.1.6.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>br.com.tagna.nexum</groupId>
+	<groupId>br.com.tsdb_example</groupId>
 	<artifactId>graphite_writer</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>graphite_writer</name>
