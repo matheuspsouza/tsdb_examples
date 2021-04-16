@@ -1,0 +1,71 @@
+version: '3'
+services:
+  portainer:
+    image: portainer/portainer
+    command: -H unix:///var/run/docker.sock
+    restart: always
+    ports:
+      - 9000:9000
+      - 8000:8000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+  influxdb-writer:
+    image: influxdb-writer/influxdb_writer:latest
+    #restart: always
+    ports:
+      - 8083:8083
+    environment:
+      - INFLUXDB.URL=http://influxdb:8086
+      - INFLUXDB.DB=influx_example
+    depends_on:
+      - influxdb 
+  influxdb:
+    image: influxdb:latest
+    #restart: always
+    ports:
+      - 8090:8086
+    volumes:
+      - influxdb-storage:/var/lib/influxdb
+    environment:
+      - INFLUXDB_DB=influx_example
+  grafana:
+    image: grafana/grafana
+    environment:
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel, vonage-status-panel, savantly-heatmap-panel, natel-plotly-panel, snuids-radar-panel
+    ports:
+      - 3000:3000
+    volumes:
+      - grafana-data:/var/lib/grafana
+  graphite-writer:
+    image: graphite-writer/graphite_writer:latest
+    #restart: always
+    environment:
+      - GRAPHITE.HOST=graphitedb
+    depends_on:
+      - graphitedb
+  graphitedb:
+    image: graphiteapp/graphite-statsd
+    #restart: always
+    ports:
+      - 8081:80
+      - 8125:8125
+      - 2004:2004
+      - 2003:2003
+    environment:
+      - GRAPHITE_TIME_ZONE=America/Sao_Paulo
+    volumes:
+      - graphite-data:/opt/graphite/storage
+      - ./graphite-docker/conf:/opt/graphite/conf
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+        - ./prometheus-docker/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+        - '9090:9090'
+volumes:
+  influxdb-storage:
+  graphite-data:
+  grafana-data:
+  portainer_data:
+       
